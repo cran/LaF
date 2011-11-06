@@ -15,14 +15,13 @@ You should have received a copy of the GNU General Public License along with
 LaF.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
-#include <iomanip>
 #include "csvreader.h"
 #include "fwfreader.h"
 #include "readermanager.h"
 #include <Rcpp.h>
 
-RcppExport SEXP laf_open_csv(SEXP r_filename, SEXP r_types, SEXP r_sep, SEXP r_dec) {
+RcppExport SEXP laf_open_csv(SEXP r_filename, SEXP r_types, SEXP r_sep, 
+    SEXP r_dec, SEXP r_trim, SEXP r_skip) {
 BEGIN_RCPP
   Rcpp::CharacterVector filenamev(r_filename);
   Rcpp::IntegerVector types(r_types);
@@ -31,9 +30,14 @@ BEGIN_RCPP
   int sep = static_cast<int>(sepv[0][0]);
   Rcpp::CharacterVector decv(r_dec);
   char dec = static_cast<char>(decv[0][0]);
+  Rcpp::LogicalVector trimv(r_trim);
+  bool trim = static_cast<bool>(trimv[0]);
+  Rcpp::IntegerVector skipv(r_skip);
+  unsigned int skip = static_cast<unsigned int>(skipv[0]);
   Rcpp::IntegerVector p = Rcpp::IntegerVector::create(1);
-  CSVReader* reader = new CSVReader(filename, sep);
+  CSVReader* reader = new CSVReader(filename, sep, skip);
   reader->set_decimal_seperator(dec);
+  reader->set_trim(trim);
   for (int i = 0; i < types.size(); ++i) {
     if (types[i] == 0) {
       reader->add_double_column();
@@ -52,7 +56,8 @@ BEGIN_RCPP
 END_RCPP
 }
 
-RcppExport SEXP laf_open_fwf(SEXP r_filename, SEXP r_types, SEXP r_widths, SEXP r_dec) {
+RcppExport SEXP laf_open_fwf(SEXP r_filename, SEXP r_types, SEXP r_widths, 
+    SEXP r_dec, SEXP r_trim) {
 BEGIN_RCPP
   Rcpp::CharacterVector filenamev(r_filename);
   Rcpp::IntegerVector types(r_types);
@@ -60,9 +65,12 @@ BEGIN_RCPP
   std::string filename = static_cast<char*>(filenamev[0]);
   Rcpp::CharacterVector decv(r_dec);
   char dec = static_cast<char>(decv[0][0]);
+  Rcpp::LogicalVector trimv(r_trim);
+  bool trim = static_cast<bool>(trimv[0]);
   Rcpp::IntegerVector p = Rcpp::IntegerVector::create(1);
   FWFReader* reader = new FWFReader(filename);
   reader->set_decimal_seperator(dec);
+  reader->set_trim(trim);
   for (int i = 0; i < types.size(); ++i) {
     if (types[i] == 0) {
       reader->add_double_column(widths[i]);
@@ -232,22 +240,20 @@ BEGIN_RCPP
   Rcpp::IntegerVector pv(p);
   Rcpp::IntegerVector column(r_column);
   Reader* reader = ReaderManager::instance()->get_reader(pv[0]);
-  std::vector<std::string> levels;
+  std::vector<std::string> labels;
+  std::vector<int> levels;
   if (reader) {
-    
     const FactorColumn* factor = dynamic_cast<const FactorColumn*>(reader->get_column(column[0]));
     if (factor) {
       const std::map<std::string, int>& levels_map = factor->get_levels();
       for (std::map<std::string, int>::const_iterator p = levels_map.begin(); p != levels_map.end(); ++p) {
-        levels.push_back(p->first);
+        labels.push_back(p->first);
+        levels.push_back(p->second);
       }
     }
   }
-  Rcpp::CharacterVector r_levels(levels.size());
-  for (unsigned int i = 0; i < levels.size(); ++i) {
-    r_levels[i] = levels[i];
-  }
-  return r_levels;
+  return Rcpp::List::create(Rcpp::Named("levels") = Rcpp::wrap(levels),
+    Rcpp::Named("labels") = Rcpp::wrap(labels));
 END_RCPP
 }
 

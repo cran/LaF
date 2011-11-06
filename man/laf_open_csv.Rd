@@ -16,7 +16,7 @@
 \usage{
   laf_open_csv(filename, column_types, 
     column_names = paste("V", seq_len(length(column_types)), sep = ""), 
-    sep = ",", dec = ".")
+    sep = ",", dec = ".", trim=FALSE, skip=0)
 }
 \arguments{
   \item{filename}{character containing the filename of the CSV-file}
@@ -27,9 +27,14 @@
   \item{sep}{optional character specifying the field seperator used in the
   file.}
   \item{dec}{optional character specifying the decimal mark.}
+  \item{trim}{optional logical specifying whether or not whitespace at the end
+  of factor levels or character strings should be trimmed.}
+  \item{skip}{optional numeric specifying the number of lines at the begining 
+  of the file that should be skipped.}
 }
 \details{
-  The CSV-file should not contain headers. 
+  The CSV-file should not contain headers. Use the skip option to skip any 
+  headers.
 }
 \value{
   Object of type \code{\linkS4class{laf}}. Values can be extracted from this

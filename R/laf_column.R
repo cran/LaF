@@ -46,7 +46,8 @@ setMethod(
         if (object@file_type == "fwf")
             cat("  Column width = ", object@column_widths[object@column], "\n", sep="")
         cat("Showing first 10 elements:\n")
-        print(object[1:10])
+        begin(object)
+        print(next_block(object, nrows=10))
     }
 )
 
@@ -153,6 +154,7 @@ setMethod(
     definition = function(x) {
         levels <- .Call("laf_levels", as.integer(x@file_id), 
                 as.integer(x@column-1))
+        levels <- levels$labels[order(levels$levels)]
         return(levels)
     }
 )
