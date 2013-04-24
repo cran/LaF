@@ -1,4 +1,4 @@
-# Copyright 2011 Jan van der Laan
+# Copyright 2011, 2013 Jan van der Laan
 #
 # This file is part of LaF.
 #
@@ -26,7 +26,9 @@ setClass(
         file_type = "character",
         column_names = "character",
         column_types = "integer",
-        column_widths = "integer"
+        column_widths = "integer",
+        levels = "list",
+        options = "list"
     )
 )
 
@@ -174,11 +176,12 @@ setMethod(
             }
         } 
         # convert factor columns to factor columns
-        for (i in 1:ncol(df)) {
-          if (x@column_types[columns[i]] == 2) {
-            levels(df[[i]]) <- levels(x[[columns[i]]])
-            class(df[[i]]) <- "factor"
-          }
+        for (i in seq_along(df)) {
+            levels <- levels(x[[columns[i]]])
+            if (nrow(levels) > 0) {
+                df[[i]] <- factor(df[[i]], levels=levels$levels,
+                    labels=levels$labels)
+            }
         }
         return(df)
     }
@@ -220,10 +223,11 @@ setMethod(
             }
         } 
         # convert factor columns to factor columns
-        for (i in 1:ncol(df)) {
-            if (x@column_types[columns[i]] == 2) {
-                levels(df[[i]]) <- levels(x[[columns[i]]])
-                class(df[[i]]) <- "factor"
+        for (i in seq_along(df)) {
+            levels <- levels(x[[columns[i]]])
+            if (nrow(levels) > 0) {
+                df[[i]] <- factor(df[[i]], levels=levels$levels,
+                    labels=levels$labels)
             }
         }
         return(df)
@@ -240,32 +244,18 @@ setMethod(
             allow_interupt = FALSE, ...) {
         if (!all(columns %in% 1:ncol(x)))
             stop("column out of range.")
+        result <- NULL
         begin(x)
-        types      <- .laf_to_rtype(x@column_types[columns])
-        df         <- lapply(types, do.call, list(nrows))
-        names(df)  <- x@column_names[columns]
-        df         <- as.data.frame(df, stringsAsFactors=FALSE)
-        result     <- NULL
-        lines_read <- 1
-        while(lines_read > 0) {
-            # read data
-            lines_read <- .Call("laf_next_block", as.integer(x@file_id), 
-                as.integer(nrows), as.integer(columns-1), df)
-            # convert factor columns to factor columns
-            for (i in 1:ncol(df)) {
-              if (x@column_types[columns[i]] == 2) {
-                levels(df[[i]]) <- levels(x[[columns[i]]])
-                class(df[[i]]) <- "factor"
-              }
-            }
-            # apply function
-            result     <- fun(df[min(lines_read,1):lines_read, , drop=FALSE], 
-                result, ...)
+        while (TRUE) {
+            df     <- next_block(x, columns = columns, nrows = nrows);
+            result <- fun(df, result, ...)
             if (allow_interupt) {
                 stop <- result[[1]]
                 result <- result[[2]]
                 if (stop) break;
             }
+
+            if (nrow(df) == 0) break
         }
         return(result)
     }
@@ -325,6 +315,23 @@ setMethod(
         return(levels)
     }
 )
+
+# =============================================================================
+# Change the levels of the columns of the data.set
+# 
+setMethod(
+    f = "levels<-",
+    signature = "laf",
+    definition = function(x, value) {
+        old_levels <- levels(x)
+        for (i in names(value)) {
+          if (!identical(old_levels[[i]], value[[i]]))
+              x@levels[[i]] <- value[[i]]
+        }
+        return(x)
+    }
+)
+
 
 # =============================================================================
 # Close file
