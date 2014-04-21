@@ -1,8 +1,8 @@
 Package: LaF
 Type: Package
 Title: Fast access to large ASCII files
-Version: 0.6
-Date: 2014-04-14
+Version: 0.6.1
+Date: 2014-04-21
 Author: Jan van der Laan
 Maintainer: Jan van der Laan <djvanderlaan@unrealizedtime.nl>
 Description: Methods for fast access to large ASCII files.  Currently the 
@@ -23,7 +23,7 @@ Imports: Rcpp (>= 0.11.1)
 Collate: 'generics.R' 'laf.R' 'laf_column.R' 'meta.R' 'open.R'
         'read_dm_blaise.R' 'stats.R' 'textutils.R' 'types.R'
         'utility.R'
-Packaged: 2014-04-14 18:56:35 UTC; eoos
+Packaged: 2014-04-21 12:15:11 UTC; eoos
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2014-04-15 00:07:46
+Date/Publication: 2014-04-21 15:38:55

@@ -1,6 +1,6 @@
-3310a9adbb3da5a6858ecb5af9427f8c *DESCRIPTION
+479e287164d14f9911577aa586f45ab7 *DESCRIPTION
 564b6edf1c0c5b4eb3b9f2108a0fc6aa *NAMESPACE
-800b9246d0c83679910c16751a7c2005 *NEWS
+9673d64480ed4b2f0be091a96df57773 *NEWS
 f34cec678de9ca55eb68086a5f8da695 *R/generics.R
 4e0735f1b0f7769e360efd0e62ee1b32 *R/laf.R
 d06e38ebab4419095dc5509cdef2a6c4 *R/laf_column.R
@@ -13,10 +13,10 @@ a9a45836134120861c6f2b9f6547e2e5 *R/textutils.R
 e5bb31393a8b33866a70070b263ba7f1 *R/utility.R
 94a98e0d46b7ad2e79cd6bd2c1110831 *build/vignette.rds
 a9df0021284efe0a45ee078ce3aa4e1a *inst/doc/LaF-benchmark.Rnw
-d708964041c77369692f1fa2189c0667 *inst/doc/LaF-benchmark.pdf
+2419d9aa3e818f1bf22056a6c0c070b7 *inst/doc/LaF-benchmark.pdf
 1efc968bc2774435c2427991da4edc5b *inst/doc/LaF-manual.R
 e98f242115c71922f43d59503c121a94 *inst/doc/LaF-manual.Rnw
-45885ed4f0e1e79c6cc0069f5895bc6a *inst/doc/LaF-manual.pdf
+20d8e0bb5cb4a75bc087dd826ce96933 *inst/doc/LaF-manual.pdf
 c61b2f42a60b07deddcaa4b6f8a761e1 *man/begin.Rd
 ce46248089675293d3245b38e35f6633 *man/cindexing.Rd
 dc337ed6c12e8d0c16aaa14a90bd1b09 *man/close.Rd
@@ -53,7 +53,7 @@ a35f3ddab1424169b08532625497ba02 *src/Makevars.win
 f6281404924ab1de3795b2760ba917bb *src/csvreader.cpp
 67de8ab99cadd893ed07dd95af18d1e6 *src/csvreader.h
 8af2eeff33657b73289cbedf555dc7e5 *src/doublecolumn.cpp
-e63a775ef28f9392f1b1bfb5eaeef3d2 *src/doublecolumn.h
+57d4fde97d0e96bfd06d2bbf47bc9f00 *src/doublecolumn.h
 18facf769d081d7387b3826b24d82e27 *src/factorcolumn.cpp
 bdcd1ec6e130851948cc4c93101306ee *src/factorcolumn.h
 6b433fa14384b55cae831a27bc8587f7 *src/file.cpp
