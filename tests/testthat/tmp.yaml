@@ -1,0 +1,9 @@
+type: csv
+filename: tmp.csv
+columns:
+- {name: V1, type: integer}
+- {name: V2, type: categorical}
+- name: V3
+  type: double
+- name: V4
+  type: string
