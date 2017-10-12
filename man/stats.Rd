@@ -2,21 +2,21 @@
 % Please edit documentation in R/stats.R
 \docType{methods}
 \name{colsum}
-\alias{colfreq}
-\alias{colfreq,laf-method}
-\alias{colfreq,laf_column-method}
-\alias{colmean}
-\alias{colmean,laf-method}
-\alias{colmean,laf_column-method}
-\alias{colnmissing}
-\alias{colnmissing,laf-method}
-\alias{colnmissing,laf_column-method}
-\alias{colrange}
-\alias{colrange,laf-method}
-\alias{colrange,laf_column-method}
 \alias{colsum}
 \alias{colsum,laf-method}
 \alias{colsum,laf_column-method}
+\alias{colmean}
+\alias{colmean,laf-method}
+\alias{colmean,laf_column-method}
+\alias{colfreq}
+\alias{colfreq,laf-method}
+\alias{colfreq,laf_column-method}
+\alias{colrange}
+\alias{colrange,laf-method}
+\alias{colrange,laf_column-method}
+\alias{colnmissing}
+\alias{colnmissing,laf-method}
+\alias{colnmissing,laf_column-method}
 \title{Calculate simple statistics of column}
 \usage{
 colsum(x, ...)
@@ -60,13 +60,12 @@ should be calculated.}
 \item{na.rm}{whether or not to ignore missing values. By default missing
 values are ignored.}
 
-\item{useNA}{method with which to treat missing values: ifany adds a field
-containing the number of missing values if there are any; always will always
-add a field with the number of missing values even when there are none; none
+\item{useNA}{method with which to treat missing values: "ifany" adds a field
+containing the number of missing values if there are any; "always" will always
+add a field with the number of missing values even when there are none; "none"
 will never add a field containing the number of missing values.}
 }
 \description{
 Methods for calculating simple statistics of columns of a file: mean, sum,
 standard deviation, range (min and max), and number of missing values.
 }
-

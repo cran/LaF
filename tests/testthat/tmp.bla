@@ -1,7 +1,0 @@
-DATAMODEL test
-FIELDS
- id "label" : INTEGER[2]
- gender : STRING[1]
- x : REAL[5] {comment}
- city : STRING[10]
-ENDMODEL
