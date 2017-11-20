@@ -1,8 +1,8 @@
 Package: LaF
 Type: Package
 Title: Fast Access to Large ASCII Files
-Version: 0.7.1
-Date: 2017-10-12
+Version: 0.8.0
+Date: 2017-11-16
 Author: Jan van der Laan
 Maintainer: Jan van der Laan <djvanderlaan@unrealizedtime.nl>
 Description: Methods for fast access to large ASCII files.  Currently the
@@ -25,6 +25,6 @@ Collate: 'generics.R' 'laf.R' 'laf_column.R' 'meta.R' 'open.R'
         'utility.R'
 RoxygenNote: 6.0.1
 NeedsCompilation: yes
-Packaged: 2017-10-12 12:41:55 UTC; dlan
+Packaged: 2017-11-20 10:47:30 UTC; dlan
 Repository: CRAN
-Date/Publication: 2017-10-12 14:04:41 UTC
+Date/Publication: 2017-11-20 12:56:01 UTC
