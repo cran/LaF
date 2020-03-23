@@ -34,16 +34,23 @@
 #' specified, or random lines.
 #'
 #' @examples
+#' # Create temporary filename
+#' tmpcsv  <- tempfile(fileext="csv")
+#'
 #' # Generate file
-#' writeLines(letters[1:20], con="tmp.csv")
+#' writeLines(letters[1:20], con=tmpcsv)
 #'
 #' # Count the lines
-#' determine_nlines("tmp.csv")
+#' determine_nlines(tmpcsv)
+#'
+#' # Cleanup
+#' file.remove(tmpcsv)
 #'
 #' @export
 determine_nlines <- function(filename) {
     if (!is.character(filename)) stop("filename should be a character vector")
-    result <- .Call("nlines", PACKAGE="LaF", as.character(filename))
+    filename <- path.expand(filename)
+    result <- .Call("nlines", PACKAGE="LaF", filename)
     return(result)
 }
 
@@ -65,18 +72,25 @@ determine_nlines <- function(filename) {
 #' \code{\link{sample_lines}} can be used to read in random lines.
 #'
 #' @examples
-#' writeLines(letters[1:20], con="tmp.csv")
-#' get_lines("tmp.csv", c(1, 10))
+#' # Create temporary filename
+#' tmpcsv  <- tempfile(fileext="csv")
+#'
+#' writeLines(letters[1:20], con=tmpcsv)
+#' get_lines(tmpcsv, c(1, 10))
+#'
+#' # Cleanup
+#' file.remove(tmpcsv)
 #'
 #' @export
 get_lines <- function(filename, line_numbers) {
     if (!is.character(filename)) 
         stop("filename should be a character vector")
+    filename <- path.expand(filename)
     if (!is.numeric(line_numbers))
         stop("line_numbers should be a numeric vector")
     line_order  <- order(line_numbers)
     line_numbers <- line_numbers[line_order]
-    result <- .Call("r_get_line", PACKAGE="LaF", as.character(filename), 
+    result <- .Call("r_get_line", PACKAGE="LaF", filename, 
         as.integer(line_numbers)-1)
     result <- result[order(seq_along(line_numbers)[line_order])]
     return(result)
@@ -106,12 +120,19 @@ get_lines <- function(filename, line_numbers) {
 #' \code{\link{get_lines}} can be used to read in specified lines.
 #'
 #' @examples
-#' writeLines(letters[1:20], con="tmp.csv")
-#' sample_lines("tmp.csv", 10)
+#' # Create temporary filename
+#' tmpcsv  <- tempfile(fileext="csv")
+#'
+#' writeLines(letters[1:20], con=tmpcsv)
+#' sample_lines(tmpcsv, 10)
+#'
+#' # Cleanup
+#' file.remove(tmpcsv)
 #'
 #' @export
 sample_lines <- function(filename, n, nlines = NULL) {
     if (!is.character(filename)) stop("filename should be a character vector")
+    filename <- path.expand(filename)
     if (!is.numeric(n)) stop("n should be a number")
     if (!is.null(nlines) && !is.numeric(nlines))
         stop("nlines should be a number")

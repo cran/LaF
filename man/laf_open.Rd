@@ -7,10 +7,13 @@
 laf_open(model, ...)
 }
 \arguments{
-\item{model}{a \link{read_dm}{data model}.}
+\item{model}{a {data model}, such as one returned by \link{read_dm} or
+\link{detect_dm_csv}.}
 
 \item{...}{additional arguments can be used to overwrite the values specified
-by the data model.}
+by the data model. These are listed in the argument documentation for
+\code{\link{laf_open_csv}} and \code{\link{laf_open_fwf}}, e.g.
+see \code{ignore_failed_conversion}.}
 }
 \value{
 Object of type \code{\linkS4class{laf}}. Values can be extracted from this
@@ -28,6 +31,11 @@ and \code{\link{laf_open_fwf}} to open the file. The data model should contain
 all information needed by these routines to open the file.
 }
 \examples{
+# Create some temporary files
+tmpcsv  <- tempfile(fileext="csv")
+tmp2csv <- tempfile(fileext="csv")
+tmpyaml <- tempfile(fileext="yaml")
+
 # Generate test data
 ntest <- 10
 column_types <- c("integer", "integer", "double", "string")
@@ -38,23 +46,28 @@ testdata <- data.frame(
     d = sample(c("jan", "pier", "tjores", "corneel"), ntest, replace=TRUE)
     )
 # Write test data to csv file
-write.table(testdata, file="tmp.csv", row.names=FALSE, col.names=FALSE, sep=',')
+write.table(testdata, file=tmpcsv, row.names=FALSE, col.names=FALSE, sep=',')
 
 # Create LaF-object
-laf <- laf_open_csv("tmp.csv", column_types=column_types)
+laf <- laf_open_csv(tmpcsv, column_types=column_types)
 
 # Write data model to file
-write_dm(laf, "tmp.yaml")
+write_dm(laf, tmpyaml)
 
 # Read data model and open file
-laf <- laf_open(read_dm("tmp.yaml"))
+laf <- laf_open(read_dm(tmpyaml))
 
 # Write test data to second csv file
-write.table(testdata, file="tmp2.csv", row.names=FALSE, col.names=FALSE, sep=',')
+write.table(testdata, file=tmp2csv, row.names=FALSE, col.names=FALSE, sep=',')
 
-# Read data model and open seconde file, demonstrating the use of the optional
+# Read data model and open second file, demonstrating the use of the optional
 # arguments to laf_open
-laf2 <- laf_open(read_dm("tmp.yaml"), filename="tmp2.csv")
+laf2 <- laf_open(read_dm(tmpyaml), filename=tmp2csv)
+
+# Cleanup
+file.remove(tmpcsv)
+file.remove(tmp2csv)
+file.remove(tmpyaml)
 
 }
 \seealso{
